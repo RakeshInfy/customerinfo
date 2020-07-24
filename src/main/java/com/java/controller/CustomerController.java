@@ -50,7 +50,7 @@ public class CustomerController {
      */
     @Cacheable(value = "customer", key="customernumber")
     @GetMapping(value = "/{customernumber}")
-    public Optional<Customer> get(@PathVariable int customernumber){
+    public Optional<Customer> get(@PathVariable(value = "customernumber")int customernumber){
         return customerService.findCustomerById(customernumber);
     }
 
@@ -60,7 +60,7 @@ public class CustomerController {
      */
     @CacheEvict(value = "customers", allEntries=true)
     @DeleteMapping(value ="/{customernumber}", produces = "application/json")
-    public void delete(@PathVariable int customernumber) {
+    public void delete(@PathVariable(value = "customernumber") int customernumber) {
         customerService.deleteCustomerById(customernumber);
     }
 

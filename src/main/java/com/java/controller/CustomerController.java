@@ -3,6 +3,8 @@ package com.java.controller;
 import com.java.model.Customer;
 import com.java.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +29,7 @@ public class CustomerController {
     /**
      * Method to get all customers details from document
      */
+    @Cacheable(value = "customers" , key="customernumber")
     @GetMapping(value = "/", produces = "application/json")
     public List<Customer> getAll(){
         return customerService.getAllCustomer();
@@ -43,8 +46,9 @@ public class CustomerController {
 
     /**
      * Method to get record from customer document
-     * @param customer
+     * @param customernumber
      */
+    @Cacheable(value = "customer", key="customernumber")
     @GetMapping(value = "/{customernumber}")
     public Optional<Customer> get(@PathVariable int customernumber){
         return customerService.findCustomerById(customernumber);
@@ -52,8 +56,9 @@ public class CustomerController {
 
     /**
      * Method to delete a record in customer document
-     * @param customer
+     * @param customernumber
      */
+    @CacheEvict(value = "customers", allEntries=true)
     @DeleteMapping(value ="/{customernumber}", produces = "application/json")
     public void delete(@PathVariable int customernumber) {
         customerService.deleteCustomerById(customernumber);

@@ -1,13 +1,16 @@
 package com.java.model;
 
-import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Objects;
-
 @Document(collection = "Customer")
 public class Customer {
+
+    public Customer(int id, int customerNumber, String name) {
+        this.id = id;
+        this.customerNumber = customerNumber;
+        this.name = name;
+    }
 
     @Id
     private int id;

@@ -5,13 +5,15 @@ import com.java.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "customer")
+@RequestMapping(value = "/customer")
 public class CustomerController {
 
     @Autowired
@@ -22,8 +24,8 @@ public class CustomerController {
      * @param customer
      */
     @PostMapping(value = "/")
-    public void create(@RequestBody Customer customer){
-        customerService.createCustomer(customer);
+    public Customer create(@RequestBody Customer customer){
+        return customerService.createCustomer(customer);
     }
 
     /**
@@ -50,8 +52,14 @@ public class CustomerController {
      */
     @Cacheable(value = "customer", key="customernumber")
     @GetMapping(value = "/{customernumber}")
-    public Optional<Customer> get(@PathVariable(value = "customernumber")int customernumber){
-        return customerService.findCustomerById(customernumber);
+    public ResponseEntity<Customer> get(@PathVariable(value = "customernumber")int customernumber){
+       Optional<Customer> customer = customerService.findCustomerById(customernumber);
+       if (customer.isPresent() ) {
+          return customer.get().getStatus().booleanValue() == false ?
+           new ResponseEntity<>(HttpStatus.NOT_FOUND): new ResponseEntity<Customer>(customer.get(),HttpStatus.OK);
+       }
+        return null;
+
     }
 
     /**

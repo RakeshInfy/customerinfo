@@ -45,7 +45,7 @@ public class CustomerServiceImplTest {
 
     @Test
     public void whenValidCustomerId_ThenCustomerShouldBeFound() {
-        Customer customer = new Customer(1211,1111, "Rakesh");
+        Customer customer = new Customer(1211,1111, "Rakesh", true);
         Mockito.when(customerDao.findById(1211)).thenReturn(java.util.Optional.of(customer));
         Optional<Customer> custSearched = customerService.findCustomerById(1211);
         Assert.assertTrue(custSearched.get().getName().equals(customer.getName()));
@@ -53,8 +53,8 @@ public class CustomerServiceImplTest {
 
     @Test
     public void testForFetchingAllRecords() {
-        Customer customer1 = new Customer(1211,1111, "Rakesh");
-        Customer customer2 = new Customer(1212,1112, "Ram");
+        Customer customer1 = new Customer(1211,1111, "Rakesh", true);
+        Customer customer2 = new Customer(1212,1112, "Ram", true);
         List<Customer> customers = Arrays.asList(customer1, customer2);
         Mockito.when(customerDao.findAll()).thenReturn(customers);
         List<Customer> allCustomers = customerService.getAllCustomer();

@@ -15,8 +15,8 @@ public class CustomerServiceImpl implements CustomerService{
     private CustomerDao customerDao;
 
     @Override
-    public void createCustomer(Customer customer) {
-        customerDao.save(customer);
+    public Customer createCustomer(Customer customer) {
+        return customerDao.save(customer);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     @Override
-    public void updateCustomer(Customer customer) {
-        customerDao.save(customer);
+    public Customer updateCustomer(Customer customer) {
+        return customerDao.save(customer);
     }
 }
